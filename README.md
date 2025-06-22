@@ -33,11 +33,11 @@ maturin develop
 ## Usage
 
 ```python
-import fastpy_rs
+from fastpy_rs import ai
 
 # Count word frequencies in a text
 text = "Hello hello world! This is a test. Test passed!"
-frequencies = fastpy_rs.token_frequency(text)
+frequencies = ai.token_frequency(text)
 print(frequencies)
 # Output: {'hello': 2, 'world': 1, 'this': 1, 'is': 1, 'a': 1, 'test': 2, 'passed': 1}
 ```

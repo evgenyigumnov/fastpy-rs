@@ -1,5 +1,5 @@
 import pytest
-import fastpy_rs
+from  fastpy_rs import ai
 import timeit
 from collections import Counter
 import spacy
@@ -10,25 +10,25 @@ nlp = spacy.load("en_core_web_sm")
 
 def test_token_frequency_basic():
     text = "hello world hello"
-    result = fastpy_rs.token_frequency(text)
+    result = ai.token_frequency(text)
     assert result == {"hello": 2, "world": 1}
 
 
 def test_token_frequency_empty():
     text = ""
-    result = fastpy_rs.token_frequency(text)
+    result = ai.token_frequency(text)
     assert result == {}
 
 
 def test_token_frequency_special_chars():
     text = "Hello, world! This is a test. Hello again!"
-    result = fastpy_rs.token_frequency(text)
+    result = ai.token_frequency(text)
     assert result == {"hello": 2, "world": 1, "this": 1, "is": 1, "a": 1, "test": 1, "again": 1}
 
 
 def test_token_frequency_case_sensitive():
     text = "Hello hello HELLO"
-    result = fastpy_rs.token_frequency(text)
+    result = ai.token_frequency(text)
     assert result == {"hello": 3}
 
 
@@ -50,7 +50,7 @@ def test_token_frequency_performance():
         return dict(Counter(tokens))
     
     # Warm-up runs
-    fastpy_rs.token_frequency(text)
+    ai.token_frequency(text)
     python_token_frequency(text)
     
     # Number of test runs
@@ -58,7 +58,7 @@ def test_token_frequency_performance():
     
     # Time the Rust implementation
     rust_time = timeit.timeit(
-        lambda: fastpy_rs.token_frequency(text),
+        lambda: ai.token_frequency(text),
         number=num_runs
     )
     
