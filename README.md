@@ -94,6 +94,18 @@ Speedup: 1.06x
 
 Our Rust implementation is slightly faster than Python's built-in hashlib, showing consistent performance improvements.
 
+### Regex Search
+Performance comparison between the Rust implementation and Python's built-in `re` module:
+
+```
+Regex Search Performance Test Results (average time per call):
+Rust implementation: 0.000841 seconds
+Python implementation: 0.002425 seconds
+Speedup: 2.88x
+```
+
+Our Rust implementation shows a significant performance improvement over Python's built-in `re` module, being approximately 2.88x faster for regex pattern matching tasks.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
