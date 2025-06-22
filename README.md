@@ -48,9 +48,9 @@ Performance comparison between the Rust implementation and a Python implementati
 
 ```
 Performance Test Results (average time per call):
-Rust implementation: 0.003164 seconds
-Python implementation (spaCy): 0.014781 seconds
-Speedup: 4.67x
+Rust implementation: 0.000207 seconds
+Python implementation: 0.014828 seconds
+Speedup: 71.66x
 ```
 
 The test compares the tokenization and frequency counting of a text sample. The Rust implementation shows a significant performance improvement over the Python/spaCy implementation, being approximately 4.7x faster in our tests. Note that spaCy provides additional NLP features beyond simple tokenization, while our Rust implementation is optimized specifically for the token frequency counting task.
