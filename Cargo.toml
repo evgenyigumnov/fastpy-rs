@@ -1,0 +1,19 @@
+[package]
+name = "fastpy_rs"
+version = "0.0.1"
+authors = ["Evgeny Igumnov <igumnovnsk@gmail.com>"]
+description = ""
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/evgenyigumnov/fastpy-rs"
+homepage = "https://github.com/evgenyigumnov/fastpy-rs"
+keywords = ["rust","python","pyo3","maturin"]
+categories = ["development-tools"]
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.25.1", features = ["extension-module"] }
+
