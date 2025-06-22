@@ -2,6 +2,7 @@ use pyo3::prelude::*;
 mod ai;
 mod datatools;
 mod crypto;
+mod textutils;
 
 #[pymodule]
 fn fastpy_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -25,6 +26,11 @@ fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     crypto_module.add_function(wrap_pyfunction!(crypto::sha256, &crypto_module)?)?;
     crypto_module.add_function(wrap_pyfunction!(crypto::sha256_str, &crypto_module)?)?;
     parent_module.add_submodule(&crypto_module)?;
+    
+    // Register textutils module
+    let textutils_module = PyModule::new(parent_module.py(), "textutils")?;
+    textutils_module.add_function(wrap_pyfunction!(textutils::regex_search, &textutils_module)?)?;
+    parent_module.add_submodule(&textutils_module)?;
     
     Ok(())
 }

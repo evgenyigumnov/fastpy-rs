@@ -26,6 +26,11 @@ FastPy-RS is a high-performance Python library that provides optimized implement
    - Example: `crypto.sha256(b"hello")` returns `"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"`
    - Also available as `sha256_str("hello")` for string inputs
 
+4. [x] **Regex Search**
+   - Finds all unique matches of a regex pattern in text
+   - Example: `textutils.regex_search(r'\b\w+@\w+\.\w+\b', 'Emails: test@example.com, user@test.org')` returns `['test@example.com', 'user@test.org']`
+   - Performance optimized with Rust's regex engine
+
 ## Installation
 
 ```bash
