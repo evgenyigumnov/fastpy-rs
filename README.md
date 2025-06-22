@@ -17,6 +17,10 @@ FastPy-RS is a high-performance Python library that provides optimized implement
    - Counts word frequencies in a text (case-insensitive)
    - Example: `{"hello": 2, "world": 1}` for input "Hello hello world"
 
+2. **Base64 Encoding**
+   - Encodes binary data to base64 string
+   - Example: `base64_encode(b"hello")` returns `b'aGVsbG8='`
+
 ## Installation
 
 ```bash
@@ -44,6 +48,7 @@ print(frequencies)
 
 ## Performance
 
+### Token Frequency Counter
 Performance comparison between the Rust implementation and a Python implementation using [spaCy](https://spacy.io/), a popular industrial-strength NLP library:
 
 ```
@@ -53,7 +58,19 @@ Python implementation: 0.014828 seconds
 Speedup: 71.66x
 ```
 
-The test compares the tokenization and frequency counting of a text sample. The Rust implementation shows a significant performance improvement over the Python/spaCy implementation, being approximately 4.7x faster in our tests. Note that spaCy provides additional NLP features beyond simple tokenization, while our Rust implementation is optimized specifically for the token frequency counting task.
+The test compares the tokenization and frequency counting of a text sample. The Rust implementation shows a significant performance improvement over the Python/spaCy implementation, being approximately 71.66x faster in our tests. Note that spaCy provides additional NLP features beyond simple tokenization, while our Rust implementation is optimized specifically for the token frequency counting task.
+
+### Base64 Encoding
+Performance comparison between the Rust implementation and Python's built-in `base64` module:
+
+```
+Base64 Performance Test Results (average time per call):
+Rust implementation: 0.00006026 seconds
+Python implementation: 0.00003622 seconds
+Speedup: 0.60x
+```
+
+Note: While the Rust implementation is currently slightly slower than Python's highly optimized built-in base64 module, it's included for completeness and may be optimized further in future updates.
 
 ## Contributing
 
@@ -116,7 +133,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 🧮 **Data Processing / Encoding**
 
-27. [ ] `base64_encode(data: bytes) -> str`
+27. [x] `base64_encode(data: bytes) -> str`
 28. [ ] `base64_decode(data: str) -> bytes`
 29. [ ] `gzip_compress(data: bytes) -> bytes`
 30. [ ] `gzip_decompress(data: bytes) -> bytes`

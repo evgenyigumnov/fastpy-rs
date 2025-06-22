@@ -1,6 +1,6 @@
 [package]
 name = "fastpy_rs"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["Evgeny Igumnov <igumnovnsk@gmail.com>"]
 description = ""
 license = "MIT"
