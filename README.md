@@ -15,15 +15,15 @@ FastPy-RS is a high-performance Python library that provides optimized implement
 
 1. **Token Frequency Counter**
    - Counts word frequencies in a text (case-insensitive)
-   - Example: `{"hello": 2, "world": 1}` for input "Hello hello world"
+   - Example: `ai.token_frequency("Hello hello world! This is a test. Test passed!")` returns `{'hello': 2, 'world': 1, 'this': 1, 'is': 1, 'a': 1, 'test': 2, 'passed': 1}`
 
 2. **Base64 Encoding**
    - Encodes binary data to base64 string
-   - Example: `base64_encode(b"hello")` returns `b'aGVsbG8='`
+   - Example: `datatools.base64_encode(b"hello")` returns `b'aGVsbG8='`
 
 3. **SHA-256 Hashing**
    - Computes SHA-256 hash of binary or string data
-   - Example: `sha256(b"hello")` returns `"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"`
+   - Example: `crypto.sha256(b"hello")` returns `"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"`
    - Also available as `sha256_str("hello")` for string inputs
 
 ## Installation
@@ -58,24 +58,36 @@ Performance comparison between the Rust implementation and a Python implementati
 
 ```
 Performance Test Results (average time per call):
-Rust implementation: 0.000207 seconds
-Python implementation: 0.014828 seconds
-Speedup: 71.66x
+Rust implementation: 0.000022 seconds
+Python implementation: 0.014737 seconds
+Speedup: 681.94x
 ```
 
-The test compares the tokenization and frequency counting of a text sample. The Rust implementation shows a significant performance improvement over the Python/spaCy implementation, being approximately 71.66x faster in our tests. Note that spaCy provides additional NLP features beyond simple tokenization, while our Rust implementation is optimized specifically for the token frequency counting task.
+The test compares the tokenization and frequency counting of a text sample. The Rust implementation shows a significant performance improvement over the Python/spaCy implementation, being approximately 682x faster in our tests. Note that spaCy provides additional NLP features beyond simple tokenization, while our Rust implementation is optimized specifically for the token frequency counting task.
 
 ### Base64 Encoding
 Performance comparison between the Rust implementation and Python's built-in `base64` module:
 
 ```
 Base64 Performance Test Results (average time per call):
-Rust implementation: 0.00006026 seconds
-Python implementation: 0.00003622 seconds
-Speedup: 0.60x
+Rust implementation: 0.00000487 seconds
+Python implementation: 0.00003055 seconds
+Speedup: 6.27x
 ```
 
-Note: While the Rust implementation is currently slightly slower than Python's highly optimized built-in base64 module, it's included for completeness and may be optimized further in future updates.
+Our Rust implementation now outperforms Python's built-in base64 module, being approximately 6.27x faster.
+
+### SHA-256 Hashing
+Performance comparison between the Rust implementation and Python's `hashlib` module:
+
+```
+SHA-256 Performance Test Results (average time per call):
+Rust implementation: 0.005949 seconds
+Python implementation: 0.006331 seconds
+Speedup: 1.06x
+```
+
+Our Rust implementation is slightly faster than Python's built-in hashlib, showing consistent performance improvements.
 
 ## Contributing
 
@@ -127,7 +139,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 🔐 **Hashing / Crypto**
 
-21. [ ] `sha256(data: bytes | str) -> str`
+21. [x] `sha256(data: bytes | str) -> str`
 22. [ ] `md5(data: bytes | str) -> str`
 23. [ ] `hmac_sha256(key, message) -> str`
 24. [ ] `blake3_hash(data) -> str`
