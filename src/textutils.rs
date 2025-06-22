@@ -3,8 +3,8 @@ use pyo3::exceptions::PyValueError;
 use regex::Regex;
 use once_cell::sync::Lazy;
 use std::sync::Mutex;
-use std::collections::{HashMap, HashSet};
-
+use std::collections::HashMap;
+use ahash::AHashSet;
 
 static REGEX_CACHE: Lazy<Mutex<HashMap<String, Regex>>> = Lazy::new(|| {
     Mutex::new(HashMap::new())
@@ -28,13 +28,10 @@ pub fn regex_search(pattern: &str, text: &str) -> PyResult<Vec<String>> {
 
     drop(cache);
 
-    let mut matches = HashSet::new();
-    for cap in re.captures_iter(text) {
-        if let Some(m) = cap.get(0) {
-            matches.insert(m.as_str().to_string());
-        }
+    let mut matches = AHashSet::new();
+    for m in re.find_iter(text) {
+        matches.insert(m.as_str().to_string());
     }
 
     Ok(matches.into_iter().collect())
 }
-

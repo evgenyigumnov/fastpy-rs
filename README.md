@@ -99,9 +99,9 @@ Performance comparison between the Rust implementation and Python's built-in `re
 
 ```
 Regex Search Performance Test Results (average time per call):
-Rust implementation: 0.000841 seconds
-Python implementation: 0.002425 seconds
-Speedup: 2.88x
+Rust implementation: 0.000586 seconds
+Python implementation: 0.002391 seconds
+Speedup: 4.08x
 ```
 
 Our Rust implementation shows a significant performance improvement over Python's built-in `re` module, being approximately 2.88x faster for regex pattern matching tasks.
@@ -190,7 +190,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 42. [ ] `levenshtein_distance(a, b) -> int`
 43. [ ] `tokenize_text(text: str) -> List[str]`
 44. [ ] `fast_word_count(text: str) -> Dict[str, int]`
-45. [ ] `regex_search(pattern, text) -> List[str]`
+45. [x] `regex_search(pattern, text) -> List[str]`
 46. [ ] `regex_replace(pattern, repl, text) -> str`
 
 ---
