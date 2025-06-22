@@ -1,7 +1,6 @@
 use pyo3::prelude::*;
 use std::collections::HashMap;
 use regex::Regex;
-use pyo3::types::PyDict;
 use pyo3::exceptions::PyValueError;
 
 
