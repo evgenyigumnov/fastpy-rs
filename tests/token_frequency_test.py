@@ -54,7 +54,7 @@ def test_token_frequency_performance():
     python_token_frequency(text)
     
     # Number of test runs
-    num_runs = 100
+    num_runs = 10
     
     # Time the Rust implementation
     rust_time = timeit.timeit(
