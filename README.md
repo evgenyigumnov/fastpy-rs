@@ -21,6 +21,11 @@ FastPy-RS is a high-performance Python library that provides optimized implement
    - Encodes binary data to base64 string
    - Example: `base64_encode(b"hello")` returns `b'aGVsbG8='`
 
+3. **SHA-256 Hashing**
+   - Computes SHA-256 hash of binary or string data
+   - Example: `sha256(b"hello")` returns `"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"`
+   - Also available as `sha256_str("hello")` for string inputs
+
 ## Installation
 
 ```bash

@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 mod ai;
 mod datatools;
-
+mod crypto;
 
 #[pymodule]
 fn fastpy_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -19,6 +19,12 @@ fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let datatools_module = PyModule::new(parent_module.py(), "datatools")?;
     datatools_module.add_function(wrap_pyfunction!(datatools::base64_encode, &datatools_module)?)?;
     parent_module.add_submodule(&datatools_module)?;
+    
+    // Register crypto module
+    let crypto_module = PyModule::new(parent_module.py(), "crypto")?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::sha256, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::sha256_str, &crypto_module)?)?;
+    parent_module.add_submodule(&crypto_module)?;
     
     Ok(())
 }
