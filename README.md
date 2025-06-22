@@ -9,7 +9,7 @@ FastPy-RS is a high-performance Python library that provides optimized implement
 
 - **Blazing Fast**: Leverages Rust's performance to provide significant speedups
 - **Easy to Use**: Simple Python interface
-- **Growing Collection**: New functions are added regularly
+- **Secure**: Written in Rust, ensuring high security
 
 ### Currently Available Functions
 
