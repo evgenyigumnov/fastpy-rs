@@ -57,54 +57,41 @@ print(frequencies)
 ```
 
 ## Performance
+Run:
+```
+pytest  --benchmark-only  --benchmark-group-by=group
+```
+Results:
+```
+---------------------------------------------------------------------------------- benchmark 'base64_encode': 2 tests ---------------------------------------------------------------------------------
+Name (time in us)                  Min                 Max                Mean             StdDev              Median               IQR            Outliers  OPS (Kops/s)            Rounds  Iterations
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_base64_encode_rust        17.3000 (1.0)      162.0000 (1.0)       18.1661 (1.0)       4.0086 (1.0)       17.8000 (1.0)      0.1001 (1.0)      139;4366       55.0476 (1.0)       16026           1
+test_base64_encode_python     116.7000 (6.75)     326.2000 (2.01)     120.4332 (6.63)     11.7741 (2.94)     118.9000 (6.68)     2.4000 (23.99)     178;320        8.3034 (0.15)       7887           1
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### Token Frequency Counter
-Performance comparison between the Rust implementation and a Python implementation using [spaCy](https://spacy.io/), a popular industrial-strength NLP library:
+-------------------------------------------------------------------------------------------------------------------- benchmark 'regex_search': 2 tests ---------------------------------------------------------------------------------------------------------------------
+Name (time in us)                                                                                 Min                   Max                  Mean             StdDev                Median                 IQR            Outliers         OPS            Rounds  Iterations
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_regex_search_rust[\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b-email]         633.8000 (1.0)        931.2000 (1.0)        667.8635 (1.0)      35.7218 (1.0)        658.8000 (1.0)       18.1750 (1.0)         79;87  1,497.3119 (1.0)        1143           1
+test_regex_search_python[\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b-email]     4,097.2000 (6.46)     4,566.4000 (4.90)     4,215.2770 (6.31)     90.3190 (2.53)     4,203.6500 (6.38)     116.5500 (6.41)         63;6    237.2323 (0.16)        204           1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------- benchmark 'sha256': 2 tests --------------------------------------------------------------------------------
+Name (time in us)          Min                 Max               Mean            StdDev             Median               IQR            Outliers  OPS (Kops/s)            Rounds  Iterations
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_sha256_rust       22.0000 (1.0)      218.9000 (1.19)     23.0597 (1.0)      4.0259 (1.0)      22.6000 (1.0)      0.4000 (1.0)      448;2624       43.3657 (1.0)       37038           1
+test_sha256_python     22.6000 (1.03)     184.4999 (1.0)      23.5171 (1.02)     4.5349 (1.13)     23.1000 (1.02)     0.4999 (1.25)     227;1221       42.5223 (0.98)      19456           1
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------- benchmark 'token_frequency': 2 tests --------------------------------------------------------------------------------------------
+Name (time in us)                        Min                     Max                    Mean                StdDev                  Median                    IQR            Outliers         OPS            Rounds  Iterations
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_token_frequency_rust           759.9000 (1.0)        1,128.4000 (1.0)          790.5642 (1.0)         41.6179 (1.0)          780.1000 (1.0)          18.7500 (1.0)         65;76  1,264.9194 (1.0)         816           1
+test_token_frequency_python     727,971.8000 (957.98)   754,932.2000 (669.03)   739,440.5600 (935.33)   9,955.3656 (239.21)   739,839.7000 (948.39)   10,844.9250 (578.40)        2;0      1.3524 (0.00)          5           1
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ```
-Performance Test Results (average time per call):
-Rust implementation: 0.000022 seconds
-Python implementation: 0.014737 seconds
-Speedup: 681.94x
-```
-
-The test compares the tokenization and frequency counting of a text sample. The Rust implementation shows a significant performance improvement over the Python/spaCy implementation, being approximately 682x faster in our tests. Note that spaCy provides additional NLP features beyond simple tokenization, while our Rust implementation is optimized specifically for the token frequency counting task.
-
-### Base64 Encoding
-Performance comparison between the Rust implementation and Python's built-in `base64` module:
-
-```
-Base64 Performance Test Results (average time per call):
-Rust implementation: 0.00000487 seconds
-Python implementation: 0.00003055 seconds
-Speedup: 6.27x
-```
-
-Our Rust implementation now outperforms Python's built-in base64 module, being approximately 6.27x faster.
-
-### SHA-256 Hashing
-Performance comparison between the Rust implementation and Python's `hashlib` module:
-
-```
-SHA-256 Performance Test Results (average time per call):
-Rust implementation: 0.005949 seconds
-Python implementation: 0.006331 seconds
-Speedup: 1.06x
-```
-
-Our Rust implementation is slightly faster than Python's built-in hashlib, showing consistent performance improvements.
-
-### Regex Search
-Performance comparison between the Rust implementation and Python's built-in `re` module:
-
-```
-Regex Search Performance Test Results (average time per call):
-Rust implementation: 0.000586 seconds
-Python implementation: 0.002391 seconds
-Speedup: 4.08x
-```
-
-Our Rust implementation shows a significant performance improvement over Python's built-in `re` module, being approximately 2.88x faster for regex pattern matching tasks.
 
 ## Contributing
 
