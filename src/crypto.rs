@@ -8,6 +8,21 @@ use pyo3::prelude::*;
 use sha2::{Digest, Sha256};
 
 
+/// Calculate SHA-256 hash of the input bytes.
+/// 
+/// # Arguments
+/// * `data` - Input bytes to be hashed
+/// 
+/// # Returns
+/// * Hex-encoded SHA-256 hash string
+/// 
+/// # Example
+/// ```
+/// use fastpy_rs::crypto::sha256;
+/// 
+/// let result = sha256(&[104, 101, 108, 108, 111]); // "hello" in bytes
+/// assert_eq!(result, "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824");
+/// ```
 #[pyfunction]
 pub fn sha256(data: &[u8]) -> String {
     let mut hasher = Sha256::new();

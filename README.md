@@ -11,7 +11,7 @@ FastPy-RS is a high-performance Python library that provides optimized implement
 - **Easy to Use**: Simple Python interface
 - **Secure**: Written in Rust, ensuring high security
 
-### Examples
+### Usage
 
 ```python
 import fastpy_rs as fr
@@ -20,6 +20,12 @@ hash_result = fr.crypto.sha256_str("hello")
 
 # Using data tools
 encoded = fr.datatools.base64_encode(b"hello")
+
+# Count word frequencies in a text
+text = "Hello hello world! This is a test. Test passed!"
+frequencies = fr.ai.token_frequency(text)
+print(frequencies)
+# Output: {'hello': 2, 'world': 1, 'this': 1, 'is': 1, 'a': 1, 'test': 2, 'passed': 1}
 ```
 
 ## Installation
@@ -33,18 +39,6 @@ Or from source:
 ```bash
 pip install maturin
 maturin develop
-```
-
-## Usage
-
-```python
-from fastpy_rs import ai
-
-# Count word frequencies in a text
-text = "Hello hello world! This is a test. Test passed!"
-frequencies = ai.token_frequency(text)
-print(frequencies)
-# Output: {'hello': 2, 'world': 1, 'this': 1, 'is': 1, 'a': 1, 'test': 2, 'passed': 1}
 ```
 
 ## Performance
