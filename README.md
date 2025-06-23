@@ -11,25 +11,16 @@ FastPy-RS is a high-performance Python library that provides optimized implement
 - **Easy to Use**: Simple Python interface
 - **Secure**: Written in Rust, ensuring high security
 
-### Currently Available Functions
+### Examples
 
-1. **Token Frequency Counter**
-   - Counts word frequencies in a text (case-insensitive)
-   - Example: `ai.token_frequency("Hello hello world! This is a test. Test passed!")` returns `{'hello': 2, 'world': 1, 'this': 1, 'is': 1, 'a': 1, 'test': 2, 'passed': 1}`
+```python
+import fastpy_rs as fr
+# Using crypto functions
+hash_result = fr.crypto.sha256_str("hello")
 
-2. **Base64 Encoding**
-   - Encodes binary data to base64 string
-   - Example: `datatools.base64_encode(b"hello")` returns `b'aGVsbG8='`
-
-3. **SHA-256 Hashing**
-   - Computes SHA-256 hash of binary or string data
-   - Example: `crypto.sha256(b"hello")` returns `"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"`
-   - Also available as `sha256_str("hello")` for string inputs
-
-4. [x] **Regex Search**
-   - Finds all unique matches of a regex pattern in text
-   - Example: `textutils.regex_search(r'\b\w+@\w+\.\w+\b', 'Emails: test@example.com, user@test.org')` returns `['test@example.com', 'user@test.org']`
-   - Performance optimized with Rust's regex engine
+# Using data tools
+encoded = fr.datatools.base64_encode(b"hello")
+```
 
 ## Installation
 
