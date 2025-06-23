@@ -24,13 +24,13 @@ def python_token_frequency(text):
     return dict(Counter(tokens))
 
 
-def test_rust_implementation(benchmark):
+def test_token_frequency_rust(benchmark):
     """Benchmark the Rust implementation of token_frequency."""
     result = benchmark(ai.token_frequency, SAMPLE_TEXT)
     assert isinstance(result, dict) and len(result) > 0
 
 
-def test_python_implementation(benchmark):
+def test_token_frequency_python(benchmark):
     """Benchmark the Python implementation using spaCy."""
     result = benchmark(python_token_frequency, SAMPLE_TEXT)
     assert isinstance(result, dict) and len(result) > 0
