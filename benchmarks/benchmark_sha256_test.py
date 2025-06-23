@@ -16,11 +16,13 @@ def python_sha256(data: bytes) -> str:
     """Python implementation using hashlib."""
     return hashlib.sha256(data).hexdigest()
 
+@pytest.mark.benchmark(group="sha256")
 def test_sha256_rust(benchmark):
     """Benchmark the Rust implementation of sha256."""
     result = benchmark(crypto.sha256, SAMPLE_DATA)
     assert isinstance(result, str) and len(result) == 64  # SHA-256 produces 64-character hex string
 
+@pytest.mark.benchmark(group="sha256")
 def test_sha256_python(benchmark):
     """Benchmark the Python implementation using hashlib."""
     result = benchmark(python_sha256, SAMPLE_DATA)

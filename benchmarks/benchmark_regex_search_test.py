@@ -24,13 +24,14 @@ def python_regex_search(pattern, text):
 @pytest.mark.parametrize("pattern,pattern_name", [
     (EMAIL_PATTERN, "email")
 ])
+@pytest.mark.benchmark(group="regex_search")
 class TestRegexSearch:
-    def test_rust_implementation(self, benchmark, pattern, pattern_name):
+    def test_regex_search_rust(self, benchmark, pattern, pattern_name):
         """Benchmark the Rust implementation of regex_search"""
         result = benchmark(textutils.regex_search, pattern, SAMPLE_TEXT)
         assert isinstance(result, list)
         
-    def test_python_implementation(self, benchmark, pattern, pattern_name):
+    def test_regex_search_python(self, benchmark, pattern, pattern_name):
         """Benchmark the Python implementation using re.findall"""
         result = benchmark(python_regex_search, pattern, SAMPLE_TEXT)
         assert isinstance(result, list)
