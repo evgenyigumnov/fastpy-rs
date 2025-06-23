@@ -90,8 +90,13 @@ Name (time in us)                        Min                     Max            
 test_token_frequency_rust           759.9000 (1.0)        1,128.4000 (1.0)          790.5642 (1.0)         41.6179 (1.0)          780.1000 (1.0)          18.7500 (1.0)         65;76  1,264.9194 (1.0)         816           1
 test_token_frequency_python     727,971.8000 (957.98)   754,932.2000 (669.03)   739,440.5600 (935.33)   9,955.3656 (239.21)   739,839.7000 (948.39)   10,844.9250 (578.40)        2;0      1.3524 (0.00)          5           1
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 ```
+### Performance Insights
+
+- **Token Frequency** shows the most dramatic improvement (935x), making it ideal for text analysis tasks
+- **Base64** and **Regex** operations benefit significantly from Rust's optimizations (6-6.6x faster)
+- **SHA-256** performance is on par with Python, as both use optimized native implementations
+- Lower standard deviation in Rust implementations indicates more consistent performance
 
 ## Contributing
 
