@@ -25,8 +25,8 @@ use pyo3::IntoPyObjectExt;
 /// print(data['age'])   # Output: 30
 ///
 /// # Parse JSON with nested structures
-/// nested = fastpy_rs.parse_json('{"users": [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}]}')
-/// print(nested['name'])  # Output: Alice
+/// nested = fastpy_rs.json.parse_json('{"users": [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}]}')
+/// print(nested['users'][0]['name'])  # Output: Alice
 /// ```
 #[pyfunction]
 pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
