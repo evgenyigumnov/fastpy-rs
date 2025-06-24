@@ -125,7 +125,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### 📦 **JSON / Data**
 
 1. [x] `parse_json(string) -> dict`
-2. [ ] `serialize_json(obj, pretty=False) -> str`
+2. [x] `serialize_json(obj) -> str`
 3. [ ] `parse_large_json_file(filepath) -> dict`
 4. [ ] `extract_json_field(json_str, path: str) -> Any` (JSONPath-like)
 5. [ ] `compare_json(json1, json2) -> bool`
