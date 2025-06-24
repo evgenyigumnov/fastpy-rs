@@ -3,7 +3,7 @@ use pyo3::prelude::*;
 use pyo3::types::{PyAnyMethods};
 use pyo3::types::{PyDict, PyList};
 use pyo3::IntoPyObjectExt;
-use serde_json::{to_string, Number, Value};
+use serde_json::{Number, Value};
 
 /// Parses a JSON string into a Python dictionary.
 ///
@@ -116,62 +116,53 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
 /// Serializes a Python object (dict, list, str, int, float, bool, None)
 /// to a JSON string.
 #[pyfunction]
-pub fn serialize_json<'py>(
-    py: Python<'py>,
-    obj: Bound<'py, PyAny>,
-) -> PyResult<String>{
-    let obj: PyObject = obj.unbind();
-    fn pyobject_to_value(val: &'_ PyObject, py: Python) -> PyResult<Value> {
+pub fn serialize_json(py: Python<'_>, obj: Bound<'_, PyAny>) -> PyResult<String> {
+    fn to_value(obj: Bound<'_, PyAny>) -> PyResult<Value> {
         // None
-        if val.is_none(py) {
+        if obj.is_none() {
             return Ok(Value::Null);
         }
         // Bool
-        if let Ok(b) = val.extract::<bool>(py) {
+        if let Ok(b) = obj.extract::<bool>() {
             return Ok(Value::Bool(b));
         }
         // Int
-        if let Ok(i) = val.extract::<i64>(py) {
-            return Ok(Value::Number(Number::from(i)));
+        if let Ok(i) = obj.extract::<i64>() {
+            return Ok(Number::from(i).into());
         }
         // Float
-        if let Ok(f) = val.extract::<f64>(py) {
-            let num = Number::from_f64(f)
-                .ok_or_else(|| PyValueError::new_err("Float out of range"))?;
-            return Ok(Value::Number(num));
+        if let Ok(f) = obj.extract::<f64>() {
+            return Number::from_f64(f)
+                .ok_or_else(|| PyValueError::new_err("Float out of range"))
+                .map(Value::Number);
         }
-        // String
-        if let Ok(s) = val.extract::<String>(py) {
-            return Ok(Value::String(s));
+        // Str
+        if let Ok(s) = obj.extract::<&str>() {           // &str вместо String
+            return Ok(Value::String(s.to_owned()));
         }
         // List
-
-        if let Ok(list) = val.downcast_bound::<PyList>(py) {
-            let mut arr = Vec::with_capacity(list.len());
-            for item in list {
-                let i: PyObject = item.into();
-                arr.push(pyobject_to_value(&i, py)?);
+        if let Ok(list) = obj.downcast::<PyList>() {
+            let mut vec = Vec::with_capacity(list.len());
+            for item in list.iter() {
+                vec.push(to_value(item)?);
             }
-            return Ok(Value::Array(arr));
+            return Ok(vec.into());
         }
         // Dict
-        if let Ok(dict) = val.downcast_bound::<PyDict>(py) {
+        if let Ok(dict) = obj.downcast::<PyDict>() {
             let mut map = serde_json::Map::with_capacity(dict.len());
-            for (k, v) in dict {
-                let key: String = k.extract()?;
-                let v: PyObject = v.into();
-                map.insert(key, pyobject_to_value(&v, py)?);
+            for (k, v) in dict.iter() {
+                map.insert(k.extract::<&str>()?.to_owned(), to_value(v)?);
             }
-            return Ok(Value::Object(map));
+            return Ok(map.into());
         }
         Err(PyValueError::new_err(format!(
-            "Type `{}` is not JSON serializable",
-            val.to_string()
+            "Type `{}` is not JSON-serializable",
+            obj.get_type().name()?
         )))
     }
 
-    let value = pyobject_to_value(&obj, py)?;
-    let result =  to_string(&value);
-    result.map_err(|e| PyValueError::new_err(format!("Serialization error: {}", e)))
-
+    let value = to_value(obj)?;
+    py.allow_threads(|| serde_json::to_string(&value))
+        .map_err(|e| PyValueError::new_err(format!("Serialization error: {e}")))
 }
