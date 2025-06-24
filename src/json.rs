@@ -1,9 +1,9 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
+use pyo3::types::{PyAnyMethods, PyString};
 use pyo3::types::{PyDict, PyList};
-use serde_json::{Value, to_string, to_string_pretty, Number};
 use pyo3::IntoPyObjectExt;
-use pyo3::types::PyAnyMethods;
+use serde_json::{to_string, to_string_pretty, Number, Value};
 
 /// Parses a JSON string into a Python dictionary.
 ///
@@ -36,27 +36,23 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
 
     fn value_to_pyobject(val: &Value, py: Python) -> PyResult<PyObject> {
         match val {
-            Value::Null        => Ok(py.None()),
-            Value::Bool(b)     => {
-                Ok(b.into_py_any(py)?)
-            },
-            Value::String(s)   => {
-                Ok(s.into_py_any(py)?)
-            },
-            Value::Array(arr)  => {
+            Value::Null => Ok(py.None()),
+            Value::Bool(b) => Ok(b.into_py_any(py)?),
+            Value::String(s) => Ok(s.into_py_any(py)?),
+            Value::Array(arr) => {
                 let list = PyList::empty(py);
                 for elem in arr {
                     list.append(value_to_pyobject(elem, py)?)?;
                 }
                 Ok(list.into_py_any(py)?)
-            },
+            }
             Value::Object(map) => {
                 let dict = PyDict::new(py);
                 for (k, v) in map {
                     dict.set_item(k, value_to_pyobject(v, py)?)?;
                 }
                 Ok(dict.into_py_any(py)?)
-            },
+            }
             Value::Number(n) => {
                 if let Some(i) = n.as_i64() {
                     Ok(i.into_py_any(py)?)
@@ -79,10 +75,11 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
 
         let any: PyObject = dict.into_py_any(py)?;
 
-
         Ok(any)
     } else {
-        Err(PyValueError::new_err("JSON must be an object at the top level"))
+        Err(PyValueError::new_err(
+            "JSON must be an object at the top level",
+        ))
     }
 }
 
@@ -122,10 +119,10 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
 #[pyfunction]
 pub fn serialize_json<'py>(
     py: Python<'py>,
-    obj: &'py PyObject,
+    obj: Bound<'py, PyAny>,
     pretty: Option<bool>,
 ) -> PyResult<String>{
-
+    let obj: PyObject = obj.unbind();
     fn pyobject_to_value(val: &'_ PyObject, py: Python) -> PyResult<Value> {
         // None
         if val.is_none(py) {
@@ -175,11 +172,12 @@ pub fn serialize_json<'py>(
         )))
     }
 
-    let value = pyobject_to_value(obj, py)?;
+    let value = pyobject_to_value(&obj, py)?;
     let result = if pretty.unwrap_or(false) {
         to_string_pretty(&value)
     } else {
         to_string(&value)
     };
     result.map_err(|e| PyValueError::new_err(format!("Serialization error: {}", e)))
+
 }
