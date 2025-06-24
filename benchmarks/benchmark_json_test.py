@@ -1,0 +1,43 @@
+import pytest
+from fastpy_rs import json as fastpy_json
+import json
+
+# Sample JSON data for benchmarking
+SAMPLE_JSON = """
+{
+    "name": "John Doe",
+    "age": 30,
+    "is_active": true,
+    "scores": [95, 87, 92, 88, 91],
+    "address": {
+        "street": "123 Main St",
+        "city": "Anytown",
+        "zip": "12345"
+    },
+    "tags": ["developer", "python", "rust"],
+    "metadata": {
+        "created_at": "2023-01-01T00:00:00Z",
+        "updated_at": "2023-06-24T10:00:00Z"
+    }
+}"""
+
+def python_parse_json(json_str: str) -> dict:
+    """Python implementation using json module."""
+    return json.loads(json_str)
+
+@pytest.mark.benchmark(group="json_parse")
+def test_json_parse_rust(benchmark):
+    """Benchmark the Rust implementation of JSON parsing."""
+    result = benchmark(fastpy_json.parse_json, SAMPLE_JSON)
+    assert isinstance(result, dict)
+
+@pytest.mark.benchmark(group="json_parse")
+def test_json_parse_python(benchmark):
+    """Benchmark the Python implementation using json module."""
+    result = benchmark(python_parse_json, SAMPLE_JSON)
+    assert isinstance(result, dict)
+
+if __name__ == "__main__":
+    # This allows running the benchmark directly with Python
+    import pytest
+    pytest.main(["-x", __file__, "--benchmark-only", "--benchmark-warmup=on"])
