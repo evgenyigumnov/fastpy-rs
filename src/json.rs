@@ -1,7 +1,8 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
-use pyo3::types::{PyBool, PyDict, PyList};
+use pyo3::types::{PyDict, PyList};
 use serde_json::Value;
+use pyo3::IntoPyObjectExt;
 
 /// parse_json(string: str) -> dict[str, Any]
 #[pyfunction]
@@ -13,11 +14,10 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
         match val {
             Value::Null        => Ok(py.None()),
             Value::Bool(b)     => {
-                Ok(PyBool::new(py, *b).to_owned().into_any().unbind())
-
+                Ok(b.into_py_any(py)?)
             },
             Value::String(s)   => {
-                Ok(s.clone().into_pyobject(py)?.to_owned().into_any().unbind())
+                Ok(s.into_py_any(py)?)
             },
             Value::Array(arr)  => {
                 let list = PyList::empty(py);
@@ -31,15 +31,15 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
                 for (k, v) in map {
                     dict.set_item(k, value_to_pyobject(v, py)?)?;
                 }
-                Ok(dict.into_pyobject(py)?.to_owned().into_any().unbind())
+                Ok(dict.into_py_any(py)?)
             },
             Value::Number(n) => {
                 if let Some(i) = n.as_i64() {
-                    Ok(i.into_pyobject(py)?.to_owned().into_any().unbind())
+                    Ok(i.into_py_any(py)?)
                 } else if let Some(u) = n.as_u64() {
-                    Ok(u.into_pyobject(py)?.to_owned().into_any().unbind())
+                    Ok(u.into_py_any(py)?)
                 } else if let Some(f) = n.as_f64() {
-                    Ok(f.into_pyobject(py)?.to_owned().into_any().unbind())
+                    Ok(f.into_py_any(py)?)
                 } else {
                     Err(PyValueError::new_err("Number out of range"))
                 }
@@ -53,7 +53,7 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
             dict.set_item(key, value_to_pyobject(&val, py)?)?;
         }
 
-        let any: PyObject = dict.into();
+        let any: PyObject = dict.into_py_any(py)?;
 
 
         Ok(any)
