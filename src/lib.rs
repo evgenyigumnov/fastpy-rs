@@ -14,6 +14,7 @@ mod json;
 /// - Data processing tools
 /// - Cryptographic functions
 /// - Text processing utilities
+/// - JSON parsing
 ///
 /// # Examples
 /// ```python
