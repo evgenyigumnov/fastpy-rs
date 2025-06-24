@@ -95,8 +95,8 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">])</span>   <span class="c1"># Output: 30</span>
 
 <span class="c1"># Parse JSON with nested structures</span>
-<span class="n">nested</span> <span class="o">=</span> <span class="n">fastpy</span><span class="o">.</span><span class="n">parse_json</span><span class="p">(</span><span class="s1">&#39;{&quot;users&quot;: [{&quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot;}, {&quot;id&quot;: 2, &quot;name&quot;: &quot;Bob&quot;}]}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">nested</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>  <span class="c1"># Output: Alice</span>
+<span class="n">nested</span> <span class="o">=</span> <span class="n"><a href="#parse_json">fastpy_rs.parse_json</a></span><span class="p">(</span><span class="s1">&#39;{&quot;users&quot;: [{&quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot;}, {&quot;id&quot;: 2, &quot;name&quot;: &quot;Bob&quot;}]}&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">nested</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>  <span class="c1"># Output: Alice</span>
 </code></pre>
 </div>
 </div>
