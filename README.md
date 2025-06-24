@@ -34,6 +34,12 @@ json_data = '{"name": "John", "age": 30, "city": "New York"}'
 parsed_json = fr.json.parse_json(json_data)
 print(parsed_json)
 # Output: {'name': 'John', 'age': 30, 'city': 'New York'}
+
+# JSON serialization
+data_to_serialize = {'name': 'John', 'age': 30, 'city': 'New York'}
+serialized_json = fr.json.serialize_json(data_to_serialize)
+print(serialized_json)
+# Output: '{"name": "John", "age": 30, "city": "New York"}'
 ```
 
 ## Installation

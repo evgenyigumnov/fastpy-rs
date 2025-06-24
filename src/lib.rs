@@ -37,7 +37,16 @@ mod json;
 /// parsed_json = fr.json.parse_json(json_data)
 /// print(parsed_json)
 /// # Output: {'name': 'John', 'age': 30, 'active': True}
+///
+/// # Serialization JSON
+///
+/// # Serialize a simple dictionary
+/// data = {"name": "John", "age": 30, "active": True}
+/// json_str = fr.json.serialize_json(data)
+/// print(json_str)  # Output: {"name":"John","age":30,"active":true}
 /// ```
+
+
 
 
 #[pymodule]
@@ -78,7 +87,7 @@ fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     // Register json module
     let json_module = PyModule::new(parent_module.py(), "json")?;
     json_module.add_function(wrap_pyfunction!(json::parse_json, &json_module)?)?;
+    json_module.add_function(wrap_pyfunction!(json::serialize_json, &json_module)?)?;
     parent_module.add_submodule(&json_module)?;
-    
     Ok(())
 }

@@ -1,9 +1,9 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
-use pyo3::types::{PyAnyMethods, PyString};
+use pyo3::types::{PyAnyMethods};
 use pyo3::types::{PyDict, PyList};
 use pyo3::IntoPyObjectExt;
-use serde_json::{to_string, to_string_pretty, Number, Value};
+use serde_json::{to_string, Number, Value};
 
 /// Parses a JSON string into a Python dictionary.
 ///
@@ -87,7 +87,6 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
 ///
 /// # Arguments
 /// * `obj` - A Python object to serialize (dict, list, str, int, float, bool, None)
-/// * `pretty` - If true, formats the output with indentation for better readability
 ///
 /// # Returns
 /// * A JSON string representation of the input object
@@ -120,7 +119,6 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
 pub fn serialize_json<'py>(
     py: Python<'py>,
     obj: Bound<'py, PyAny>,
-    pretty: Option<bool>,
 ) -> PyResult<String>{
     let obj: PyObject = obj.unbind();
     fn pyobject_to_value(val: &'_ PyObject, py: Python) -> PyResult<Value> {
@@ -173,11 +171,7 @@ pub fn serialize_json<'py>(
     }
 
     let value = pyobject_to_value(&obj, py)?;
-    let result = if pretty.unwrap_or(false) {
-        to_string_pretty(&value)
-    } else {
-        to_string(&value)
-    };
+    let result =  to_string(&value);
     result.map_err(|e| PyValueError::new_err(format!("Serialization error: {}", e)))
 
 }
