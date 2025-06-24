@@ -33,6 +33,7 @@
                     <li><a href="fastpy_rs/datatools.html">datatools</a></li>
                     <li><a href="fastpy_rs/crypto.html">crypto</a></li>
                     <li><a href="fastpy_rs/textutils.html">textutils</a></li>
+                    <li><a href="fastpy_rs/json.html">json</a></li>
             </ul>
 
 
@@ -76,6 +77,12 @@ fastpy_rs    </h1>
 <span class="n">frequencies</span> <span class="o">=</span> <span class="n">fr</span><span class="o">.</span><span class="n">ai</span><span class="o">.</span><span class="n">token_frequency</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
 <span class="c1"># Output: {&#39;hello&#39;: 2, &#39;world&#39;: 1, &#39;this&#39;: 1, &#39;is&#39;: 1, &#39;a&#39;: 1, &#39;test&#39;: 2, &#39;passed&#39;: 1}</span>
+
+<span class="c1"># JSON parsing</span>
+<span class="n">json_data</span> <span class="o">=</span> <span class="s1">&#39;{&quot;name&quot;: &quot;John&quot;, &quot;age&quot;: 30, &quot;active&quot;: true}&#39;</span>
+<span class="n">parsed_json</span> <span class="o">=</span> <span class="n">fr</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">parse_json</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">parsed_json</span><span class="p">)</span>
+<span class="c1"># Output: {&#39;name&#39;: &#39;John&#39;, &#39;age&#39;: 30, &#39;active&#39;: True}</span>
 </code></pre>
 </div>
 </div>

@@ -4,7 +4,30 @@ use pyo3::types::{PyDict, PyList};
 use serde_json::Value;
 use pyo3::IntoPyObjectExt;
 
-/// parse_json(string: str) -> dict[str, Any]
+/// Parses a JSON string into a Python dictionary.
+///
+/// # Arguments
+/// * `json_str` - A string containing valid JSON data
+///
+/// # Returns
+/// * A Python dictionary representing the parsed JSON data
+///
+/// # Raises
+/// * `ValueError` - If the input string is not valid JSON or if the JSON is not an object at the top level
+///
+/// # Examples
+/// ```python
+/// import fastpy_rs
+///
+/// # Parse a simple JSON object
+/// data = fastpy_rs.json.parse_json('{"name": "John", "age": 30, "active": true}')
+/// print(data['name'])  # Output: John
+/// print(data['age'])   # Output: 30
+///
+/// # Parse JSON with nested structures
+/// nested = fastpy.parse_json('{"users": [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}]}')
+/// print(nested['users'][0]['name'])  # Output: Alice
+/// ```
 #[pyfunction]
 pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
     let value: Value = serde_json::from_str(json_str)

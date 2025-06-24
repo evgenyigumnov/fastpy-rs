@@ -30,6 +30,12 @@ mod json;
 /// frequencies = fr.ai.token_frequency(text)
 /// print(frequencies)
 /// # Output: {'hello': 2, 'world': 1, 'this': 1, 'is': 1, 'a': 1, 'test': 2, 'passed': 1}
+///
+/// # JSON parsing
+/// json_data = '{"name": "John", "age": 30, "active": true}'
+/// parsed_json = fr.json.parse_json(json_data)
+/// print(parsed_json)
+/// # Output: {'name': 'John', 'age': 30, 'active': True}
 /// ```
 
 

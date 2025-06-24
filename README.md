@@ -28,6 +28,12 @@ text = "Hello hello world! This is a test. Test passed!"
 frequencies = fr.ai.token_frequency(text)
 print(frequencies)
 # Output: {'hello': 2, 'world': 1, 'this': 1, 'is': 1, 'a': 1, 'test': 2, 'passed': 1}
+
+# JSON parsing
+json_data = '{"name": "John", "age": 30, "city": "New York"}'
+parsed_json = fr.json.parse_json(json_data)
+print(parsed_json)
+# Output: {'name': 'John', 'age': 30, 'city': 'New York'}
 ```
 
 ## Installation
@@ -77,6 +83,13 @@ Name (time in us)                        Min                     Max            
 test_token_frequency_rust           759.9000 (1.0)        1,128.4000 (1.0)          790.5642 (1.0)         41.6179 (1.0)          780.1000 (1.0)          18.7500 (1.0)         65;76  1,264.9194 (1.0)         816           1
 test_token_frequency_python     727,971.8000 (957.98)   754,932.2000 (669.03)   739,440.5600 (935.33)   9,955.3656 (239.21)   739,839.7000 (948.39)   10,844.9250 (578.40)        2;0      1.3524 (0.00)          5           1
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------- benchmark 'json_parse': 2 tests ----------------------------------------------------------------------------------
+Name (time in us)               Min                 Max                Mean             StdDev              Median               IQR            Outliers  OPS (Kops/s)            Rounds  Iterations
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_json_parse_python      67.0000 (1.0)      351.2000 (1.08)      71.7280 (1.0)       8.6944 (1.0)       70.5000 (1.0)      2.2000 (1.0)       292;588       13.9416 (1.0)       10965           1
+test_json_parse_rust       148.9000 (2.22)     324.5000 (1.0)      155.2763 (2.16)     12.0176 (1.38)     153.2000 (2.17)     2.9000 (1.32)      138;236        6.4401 (0.46)       3728           1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ```
 ### Performance Insights
 
@@ -105,7 +118,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 📦 **JSON / Data**
 
-1. [ ] `parse_json(string) -> dict`
+1. [x] `parse_json(string) -> dict`
 2. [ ] `serialize_json(obj, pretty=False) -> str`
 3. [ ] `parse_large_json_file(filepath) -> dict`
 4. [ ] `extract_json_field(json_str, path: str) -> Any` (JSONPath-like)
