@@ -5,6 +5,7 @@ mod ai;
 mod datatools;
 mod crypto;
 mod textutils;
+mod json;
 
 /// FastPy-RS: High-performance Python extensions written in Rust
 ///
@@ -66,6 +67,11 @@ fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let textutils_module = PyModule::new(parent_module.py(), "textutils")?;
     textutils_module.add_function(wrap_pyfunction!(textutils::regex_search, &textutils_module)?)?;
     parent_module.add_submodule(&textutils_module)?;
+    
+    // Register json module
+    let json_module = PyModule::new(parent_module.py(), "json")?;
+    json_module.add_function(wrap_pyfunction!(json::parse_json, &json_module)?)?;
+    parent_module.add_submodule(&json_module)?;
     
     Ok(())
 }
