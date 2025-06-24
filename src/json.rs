@@ -24,7 +24,7 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
                 for elem in arr {
                     list.append(value_to_pyobject(elem, py)?)?;
                 }
-                Ok(list.into_pyobject(py)?.to_owned().into_any().unbind())
+                Ok(list.into_py_any(py)?)
             },
             Value::Object(map) => {
                 let dict = PyDict::new(py);
