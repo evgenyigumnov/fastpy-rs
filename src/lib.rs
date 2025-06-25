@@ -6,6 +6,7 @@ mod datatools;
 mod crypto;
 mod textutils;
 mod json;
+mod http;
 
 /// FastPy-RS: High-performance Python extensions written in Rust
 ///
@@ -15,6 +16,7 @@ mod json;
 /// - Cryptographic functions
 /// - Text processing utilities
 /// - JSON parsing
+/// - HTTP client functionality
 ///
 /// # Examples
 /// ```python
@@ -89,5 +91,10 @@ fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     json_module.add_function(wrap_pyfunction!(json::parse_json, &json_module)?)?;
     json_module.add_function(wrap_pyfunction!(json::serialize_json, &json_module)?)?;
     parent_module.add_submodule(&json_module)?;
+    
+    // Register http module
+    let http_module = PyModule::new(parent_module.py(), "http")?;
+    http_module.add_function(wrap_pyfunction!(http::http_get, &http_module)?)?;
+    parent_module.add_submodule(&http_module)?;
     Ok(())
 }
