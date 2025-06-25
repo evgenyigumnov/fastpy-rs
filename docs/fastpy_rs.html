@@ -84,6 +84,13 @@ fastpy_rs    </h1>
 <span class="n">parsed_json</span> <span class="o">=</span> <span class="n">fr</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">parse_json</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">parsed_json</span><span class="p">)</span>
 <span class="c1"># Output: {&#39;name&#39;: &#39;John&#39;, &#39;age&#39;: 30, &#39;active&#39;: True}</span>
+
+<span class="c1"># Serialization JSON</span>
+
+<span class="c1"># Serialize a simple dictionary</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;active&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">json_str</span> <span class="o">=</span> <span class="n">fr</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">serialize_json</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json_str</span><span class="p">)</span>  <span class="c1"># Output: {&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30,&quot;active&quot;:true}</span>
 </code></pre>
 </div>
 </div>

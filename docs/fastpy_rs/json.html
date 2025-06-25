@@ -33,6 +33,9 @@
             <li>
                     <a class="function" href="#parse_json">parse_json</a>
             </li>
+            <li>
+                    <a class="function" href="#serialize_json">serialize_json</a>
+            </li>
     </ul>
 
 
@@ -99,6 +102,64 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">nested</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>  <span class="c1"># Output: Alice</span>
 </code></pre>
 </div>
+</div>
+
+
+                </section>
+                <section id="serialize_json">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">serialize_json</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">obj</span></span><span class="return-annotation">):</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#serialize_json"></a>
+    
+            <div class="docstring"><p>Serializes a Python object to a JSON string.</p>
+
+<h1 id="arguments">Arguments</h1>
+
+<ul>
+<li><code>obj</code> - A Python object to serialize (dict, list, str, int, float, bool, None)</li>
+</ul>
+
+<h1 id="returns">Returns</h1>
+
+<ul>
+<li>A JSON string representation of the input object</li>
+</ul>
+
+<h1 id="raises">Raises</h1>
+
+<ul>
+<li><code>ValueError</code> - If the object contains types that cannot be serialized to JSON</li>
+</ul>
+
+<h1 id="examples">Examples</h1>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">fastpy_rs</span>
+
+<span class="c1"># Serialize a simple dictionary</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;active&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">json_str</span> <span class="o">=</span> <span class="n"><a href="#serialize_json">fastpy_rs.json.serialize_json</a></span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json_str</span><span class="p">)</span>  <span class="c1"># Output: {&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30,&quot;active&quot;:true}</span>
+
+<span class="c1"># Pretty-print the JSON</span>
+<span class="n">pretty_json</span> <span class="o">=</span> <span class="n"><a href="#serialize_json">fastpy_rs.json.serialize_json</a></span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pretty_json</span><span class="p">)</span>
+<span class="c1"># Output:</span>
+<span class="c1"># {</span>
+<span class="c1">#   &quot;name&quot;: &quot;John&quot;,</span>
+<span class="c1">#   &quot;age&quot;: 30,</span>
+<span class="c1">#   &quot;active&quot;: true</span>
+<span class="c1"># }</span>
+</code></pre>
+</div>
+
+<p>Serializes a Python object (dict, list, str, int, float, bool, None)
+to a JSON string.</p>
 </div>
 
 

@@ -1,9 +1,11 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
-use pyo3::types::{PyAnyMethods};
-use pyo3::types::{PyDict, PyList};
 use pyo3::IntoPyObjectExt;
-use serde_json::{Number, Value};
+use serde_json::{Value};
+use serde_json::ser::{CompactFormatter, Serializer};
+use pyo3::types::{PyAnyMethods, PyDict, PyList, PyString};
+use serde::ser::{Error, SerializeMap, SerializeSeq};
+use serde::ser::{Serialize, Serializer as SerTrait};
 
 /// Parses a JSON string into a Python dictionary.
 ///
@@ -115,54 +117,85 @@ pub fn parse_json(py: Python, json_str: &str) -> PyResult<PyObject> {
 /// ```
 /// Serializes a Python object (dict, list, str, int, float, bool, None)
 /// to a JSON string.
+
 #[pyfunction]
-pub fn serialize_json(py: Python<'_>, obj: Bound<'_, PyAny>) -> PyResult<String> {
-    fn to_value(obj: Bound<'_, PyAny>) -> PyResult<Value> {
-        // None
-        if obj.is_none() {
-            return Ok(Value::Null);
-        }
-        // Bool
-        if let Ok(b) = obj.extract::<bool>() {
-            return Ok(Value::Bool(b));
-        }
-        // Int
-        if let Ok(i) = obj.extract::<i64>() {
-            return Ok(Number::from(i).into());
-        }
-        // Float
-        if let Ok(f) = obj.extract::<f64>() {
-            return Number::from_f64(f)
-                .ok_or_else(|| PyValueError::new_err("Float out of range"))
-                .map(Value::Number);
-        }
-        // Str
-        if let Ok(s) = obj.extract::<&str>() {           // &str вместо String
-            return Ok(Value::String(s.to_owned()));
-        }
-        // List
-        if let Ok(list) = obj.downcast::<PyList>() {
-            let mut vec = Vec::with_capacity(list.len());
-            for item in list.iter() {
-                vec.push(to_value(item)?);
-            }
-            return Ok(vec.into());
-        }
-        // Dict
-        if let Ok(dict) = obj.downcast::<PyDict>() {
-            let mut map = serde_json::Map::with_capacity(dict.len());
-            for (k, v) in dict.iter() {
-                map.insert(k.extract::<&str>()?.to_owned(), to_value(v)?);
-            }
-            return Ok(map.into());
-        }
-        Err(PyValueError::new_err(format!(
-            "Type `{}` is not JSON-serializable",
-            obj.get_type().name()?
-        )))
+pub fn serialize_json(_py: Python<'_>, obj: Bound<'_, PyAny>) -> PyResult<String> {
+    // Буфер, который умеет `std::io::Write`.
+    let mut buf = Vec::<u8>::with_capacity(256);
+
+    {
+        // Компактный форматтер; можно поменять на PrettyFormatter по желанию.
+        let mut ser = Serializer::with_formatter(&mut buf, CompactFormatter {});
+        // Всё тяжёлое — без GIL.
+
+        // py.allow_threads(|| PyAnySerializer { inner: obj }.serialize(&mut ser)).map_err(|e| PyValueError::new_err(format!("UTF-8 error: {e}")))?
+        PyAnySerializer { inner: obj }.serialize(&mut ser).map_err(|e| PyValueError::new_err(format!("UTF-8 error: {e}")))?
     }
 
-    let value = to_value(obj)?;
-    py.allow_threads(|| serde_json::to_string(&value))
-        .map_err(|e| PyValueError::new_err(format!("Serialization error: {e}")))
+    // Безопасно, потому что serde_json всегда пишет валидный UTF-8.
+    Ok(String::from_utf8(buf)
+        .map_err(|e| PyValueError::new_err(format!("UTF-8 error: {e}")))?)
+}
+
+/// Обёртка, которая делает любой PyAny сериализуемым.
+struct PyAnySerializer<'py> {
+    inner: Bound<'py, PyAny>,
+}
+
+impl<'py> Serialize for PyAnySerializer<'py> {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: SerTrait,
+    {
+        let obj = &self.inner;
+
+        // None -------------------------------------------------------
+        if obj.is_none() {
+            return serializer.serialize_unit();
+        }
+        // Bool -------------------------------------------------------
+        if let Ok(b) = obj.extract::<bool>() {
+            return serializer.serialize_bool(b);
+        }
+        // Int --------------------------------------------------------
+        if let Ok(i) = obj.extract::<i64>() {
+            return serializer.serialize_i64(i);
+        }
+        // Float ------------------------------------------------------
+        if let Ok(f) = obj.extract::<f64>() {
+            if !f.is_finite() {
+                return Err(S::Error::custom("Float out of range"));
+            }
+            return serializer.serialize_f64(f);
+        }
+        // Str --------------------------------------------------------
+        if let Ok(s) = obj.extract::<&str>() {
+            return serializer.serialize_str(s);
+        }
+        // List -------------------------------------------------------
+        if let Ok(list) = obj.downcast::<PyList>() {
+            let mut seq = serializer.serialize_seq(Some(list.len()))?;
+            for item in list.iter() {
+                seq.serialize_element(&PyAnySerializer { inner: item })?;
+            }
+            return seq.end();
+        }
+        // Dict -------------------------------------------------------
+        if let Ok(d) = obj.downcast::<PyDict>() {
+            let mut map = serializer.serialize_map(Some(d.len()))?;
+            for (k, v) in d.iter() {
+                let key: &str = k
+                    .extract()
+                    .map_err(|_| S::Error::custom("Dict keys must be str"))?;
+                map.serialize_entry(key, &PyAnySerializer { inner: v })?;
+            }
+            return map.end();
+        }
+
+        // Всё остальное — ошибка.
+        Err(S::Error::custom(format!(
+            "Type `{}` is not JSON-serializable",
+            obj.get_type().name().unwrap_or(PyString::new(obj.py(), "<unknown>"))
+        )))
+    }
 }

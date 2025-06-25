@@ -4,10 +4,10 @@ import fastpy_rs
 
 # Sample data for serialization
 SAMPLE_DATA = {
-    "name": "John Doe" ,
+    "name": "John Doe" * 100000 ,
     "age": 30,
     "is_active": True,
-    "scores": [95, 87, 92, 88, 91] ,
+    "scores": [95, 87, 92, 88, 91] * 100000 ,
     "address": {
         "street": "123 Main St",
         "city": "Anytown",
@@ -15,7 +15,7 @@ SAMPLE_DATA = {
     },
     "tags": ["developer", "python", "rust"],
     "metadata": {
-        "created_at": "2023-01-01T00:00:00Z",
+        "created_at": "2023-01-01T00:00:00Z" * 100000,
         "updated_at": "2023-06-24T10:00:00Z"
     }
 }
