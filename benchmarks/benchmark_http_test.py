@@ -1,11 +1,8 @@
 import pytest
 import fastpy_rs
 import time
-import threading
 import requests
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from typing import Dict, Any
-
 # Configuration
 SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 8080
@@ -13,13 +10,13 @@ BASE_URL = f'http://{SERVER_HOST}:{SERVER_PORT}/'
 NUM_REQUESTS = 10  # Number of requests for the benchmark
 CONCURRENT_REQUESTS = 10  # Number of concurrent requests
 
-from http.server import SimpleHTTPRequestHandler
-from socketserver import TCPServer
 import threading
+
+response_text = "Hello, World!"
+
 
 class HelloHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        response_text = "Hello, World!"
         self.send_response(200)
         self.send_header("Content-Type", "text/plain; charset=utf-8")
         self.send_header("Content-Length", str(len(response_text.encode("utf-8"))))
