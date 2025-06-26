@@ -40,6 +40,12 @@ data_to_serialize = {'name': 'John', 'age': 30, 'city': 'New York'}
 serialized_json = fr.json.serialize_json(data_to_serialize)
 print(serialized_json)
 # Output: '{"name": "John", "age": 30, "city": "New York"}'
+
+# HTTP requests
+url = "https://api.example.com/data"
+response = fr.http.get(url)
+print(response)
+# Output: b'{"data": "example"}'
 ```
 
 ## Installation
@@ -104,6 +110,12 @@ test_json_serialize_python     18.5541 (1.0)      19.9359 (1.0)      19.3042 (1.
 test_json_serialize_rust       30.9494 (1.67)     31.6470 (1.59)     31.2320 (1.62)     0.1815 (1.0)      31.2358 (1.61)     0.2919 (1.0)           8;0  32.0185 (0.62)         33           1
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+------------------------------------------------------------------------------------------ benchmark: 2 tests -----------------------------------------------------------------------------------------
+Name (time in us)             Min                   Max                Mean              StdDev              Median                 IQR            Outliers  OPS (Kops/s)            Rounds  Iterations
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_http_get_rust       321.9620 (1.0)      1,928.3610 (2.77)     629.2036 (1.0)      335.8742 (31.09)    538.7160 (1.0)      424.6580 (27.51)        12;4        1.5893 (1.0)         100         100
+test_http_get_python     637.9020 (1.98)       696.6980 (1.0)      663.1543 (1.05)      10.8032 (1.0)      664.8140 (1.23)      15.4370 (1.0)          37;1        1.5079 (0.95)        100         100
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ```
 ### Performance Insights
 
@@ -134,20 +146,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 1. [x] `parse_json(string) -> dict`
 2. [x] `serialize_json(obj) -> str`
-3. [ ] `parse_large_json_file(filepath) -> dict`
-4. [ ] `extract_json_field(json_str, path: str) -> Any` (JSONPath-like)
-5. [ ] `compare_json(json1, json2) -> bool`
-6. [ ] `validate_json(schema: dict, data: dict) -> bool`
-7. [ ] `minify_json(json_str: str) -> str`
-8. [ ] `pretty_print_json(json_str: str) -> str`
-9. [ ] `merge_json_objects(json1: dict, json2: dict) -> dict`
-10. [ ] `flatten_json(nested_dict: dict) -> dict`
+
 
 ---
 
 ### 🌐 **HTTP / Networking**
 
-11. [ ] `http_get(url, headers=None, timeout=10) -> str`
+11. [x] `get(url) -> str`
 12. [ ] `http_post(url, data, headers=None) -> str`
 13. [ ] `http_download(url, dest_path)`
 14. [ ] `http_request(method, url, headers, body) -> (code, body)`

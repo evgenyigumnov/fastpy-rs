@@ -46,6 +46,11 @@ mod http;
 /// data = {"name": "John", "age": 30, "active": True}
 /// json_str = fr.json.serialize_json(data)
 /// print(json_str)  # Output: {"name":"John","age":30,"active":true}
+///
+/// # HTTP client
+/// response = fr.http.get("https://httpbin.org/get")
+/// print(response)
+/// # Output: JSON response from the server
 /// ```
 
 
