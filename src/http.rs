@@ -18,50 +18,35 @@ use std::time::Duration;
 /// import fastpy_rs
 ///
 /// # Make a simple GET request
-/// response = fastpy_rs.http.http_get("https://httpbin.org/get")
+/// response = fastpy_rs.http.get("https://httpbin.org/get")
 /// print(response)  # Output: JSON response from the server
 ///
 /// # Handle errors
 /// try:
-///     fastpy_rs.http.http_get("https://nonexistent.url")
+///     fastpy_rs.http.get("https://nonexistent.url")
 /// except ValueError as e:
 ///     print(f"Request failed: {e}")
 /// ```
 #[pyfunction]
-pub fn http_get(url: &str) -> PyResult<String> {
-    // Create a runtime for the async request
-    let rt = tokio::runtime::Runtime::new()
-        .map_err(|e| PyValueError::new_err(format!("Failed to create runtime: {}", e)))?;
-
-    // Execute the async block on the runtime
-    rt.block_on(async {
-        let client = reqwest::Client::builder()
+pub fn get(py: Python, url: String) -> PyResult<String> {
+    let body = py.allow_threads(|| {
+        let client = reqwest::blocking::Client::builder()
             .timeout(Duration::from_secs(30))
             .build()
-            .map_err(|e| PyValueError::new_err(format!("Failed to create HTTP client: {}", e)))?;
+            .map_err(|e| format!("Can't build client: {}", e))?;
 
-        let response = client
-            .get(url)
+        let resp = client
+            .get(&url)
             .send()
-            .await
-            .map_err(|e| PyValueError::new_err(format!("Request failed: {}", e)))?;
+            .map_err(|e| format!("Request failed: {}", e))?;
 
-        // Check if the request was successful
-        if !response.status().is_success() {
-            return Err(PyValueError::new_err(format!(
-                "Request failed with status code: {}",
-                response.status()
-            )));
+        if !resp.status().is_success() {
+            return Err(format!("Status code: {}", resp.status()));
         }
 
-        // Get the response body as text
-        let body = response
-            .text()
-            .await
-            .map_err(|e| PyValueError::new_err(format!("Failed to read response body: {}", e)))?;
-
-        Ok(body)
+        resp.text().map_err(|e| format!("Ошибка чтения тела: {}", e))
     })
+    .map_err(|e| PyValueError::new_err(e))?;
+
+    Ok(body)
 }
-
-

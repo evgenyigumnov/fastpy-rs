@@ -94,7 +94,7 @@ fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     
     // Register http module
     let http_module = PyModule::new(parent_module.py(), "http")?;
-    http_module.add_function(wrap_pyfunction!(http::http_get, &http_module)?)?;
+    http_module.add_function(wrap_pyfunction!(http::get, &http_module)?)?;
     parent_module.add_submodule(&http_module)?;
     Ok(())
 }
