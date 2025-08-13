@@ -24,7 +24,39 @@ import fastpy_rs as fr
 hash_result = fr.crypto.sha256_str("hello")
 
 # Using data tools
+
+# datatools.base64_encode / datatools.base64_decode
 encoded = fr.datatools.base64_encode(b"hello")
+decoded = fr.datatools.base64_decode("aGVsbG8=")
+
+invalid_data = '<!!!!!!----'
+try:
+    fr.datatools.base64_decode(invalid_data)
+except ValueError:
+    pass
+
+# datatools.gzip_compress / datatools.gzip_decompress
+import gzip as py_builtin_gzip
+
+test_bytes = "Hello World".encode()
+compressed_bytes1 = fr.datatools.gzip_compress(test_bytes)  # default compress level is 9
+compressed_bytes2 = fr.datatools.gzip_compress(test_bytes, 6)
+
+compressed_bytes = py_builtin_gzip.compress("Hello World".encode(), 9, mtime=0)
+assert fr.datatools.gzip_decompress(compressed_bytes) == b"Hello World"
+
+
+# datatools.url_decode / datatools.url_encode
+from urllib.parse import quote, unquote
+
+assert datatools.url_encode("This string will be URL encoded.") == quote(
+        "This string will be URL encoded."
+    )
+
+
+assert datatools.url_decode("%F0%9F%91%BE%20Exterminate%21") == unquote(
+        "%F0%9F%91%BE%20Exterminate%21"
+    )
 
 # Count word frequencies in a text
 text = "Hello hello world! This is a test. Test passed!"
@@ -182,11 +214,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### 🧮 **Data Processing / Encoding**
 
 27. [x] `base64_encode(data: bytes) -> str`
-28. [ ] `base64_decode(data: str) -> bytes`
-29. [ ] `gzip_compress(data: bytes) -> bytes`
-30. [ ] `gzip_decompress(data: bytes) -> bytes`
-31. [ ] `url_encode(str) -> str`
-32. [ ] `url_decode(str) -> str`
+28. [x] `base64_decode(data: str) -> bytes`
+29. [x] `gzip_compress(data: bytes) -> bytes`
+30. [x] `gzip_decompress(data: bytes) -> bytes`
+31. [x] `url_encode(str) -> str`
+32. [x] `url_decode(str) -> str`
 33. [ ] `csv_parse(csv_string) -> List[Dict]`
 34. [ ] `csv_serialize(data: List[Dict]) -> str`
 35. [ ] `bloom_filter_create(size: int, hash_funcs: int)`
