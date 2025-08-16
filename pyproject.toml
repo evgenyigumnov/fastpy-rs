@@ -1,0 +1,7 @@
+[tool.maturin]
+python-source = "fastpy_rs"
+features = ["pyo3/extension-module"]
+
+[build-system]
+requires = ['maturin>=1.8.0,<2']
+build-backend = 'maturin'
