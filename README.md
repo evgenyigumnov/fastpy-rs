@@ -203,11 +203,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### 🔐 **Hashing / Crypto**
 
 21. [x] `sha256(data: bytes | str) -> str`
-22. [ ] `md5(data: bytes | str) -> str`
-23. [ ] `hmac_sha256(key, message) -> str`
-24. [ ] `blake3_hash(data) -> str`
-25. [ ] `is_valid_sha256(hexstr: str) -> bool`
-26. [ ] `secure_compare(a: str, b: str) -> bool`
+22. [x] `md5(data: bytes | str) -> str`
+23. [x] `hmac_sha256(key, message) -> str`
+24. [x] `blake3_hash(data) -> str`
+25. [x] `is_valid_sha256(hexstr: str) -> bool`
+26. [x] `secure_compare(a: str, b: str) -> bool`
 
 ---
 
