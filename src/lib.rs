@@ -89,6 +89,11 @@ fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let crypto_module = PyModule::new(parent_module.py(), "crypto")?;
     crypto_module.add_function(wrap_pyfunction!(crypto::sha256, &crypto_module)?)?;
     crypto_module.add_function(wrap_pyfunction!(crypto::sha256_str, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::md5_, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::hmac_sha256, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::blake3_hash, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::is_valid_sha256, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::secure_compare, &crypto_module)?)?;
     parent_module.add_submodule(&crypto_module)?;
     
     // Register textutils module
