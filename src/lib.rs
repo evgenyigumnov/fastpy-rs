@@ -83,16 +83,23 @@ fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 
     // Register datatools module
     let datatools_module = PyModule::new(parent_module.py(), "datatools")?;
-    datatools_module.add_function(wrap_pyfunction!(
-        datatools::base64_encode,
-        &datatools_module
-    )?)?;
+    datatools_module.add_function(wrap_pyfunction!(datatools::base64_encode, &datatools_module)?)?;
+    datatools_module.add_function(wrap_pyfunction!(datatools::base64_decode, &datatools_module)?)?;
+    datatools_module.add_function(wrap_pyfunction!(datatools::gzip_compress, &datatools_module)?)?;
+    datatools_module.add_function(wrap_pyfunction!(datatools::gzip_decompress, &datatools_module)?)?;
+    datatools_module.add_function(wrap_pyfunction!(datatools::url_encode, &datatools_module)?)?;
+    datatools_module.add_function(wrap_pyfunction!(datatools::url_decode, &datatools_module)?)?;
     parent_module.add_submodule(&datatools_module)?;
 
     // Register crypto module
     let crypto_module = PyModule::new(parent_module.py(), "crypto")?;
     crypto_module.add_function(wrap_pyfunction!(crypto::sha256, &crypto_module)?)?;
     crypto_module.add_function(wrap_pyfunction!(crypto::sha256_str, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::md5_, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::hmac_sha256, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::blake3_hash, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::is_valid_sha256, &crypto_module)?)?;
+    crypto_module.add_function(wrap_pyfunction!(crypto::secure_compare, &crypto_module)?)?;
     parent_module.add_submodule(&crypto_module)?;
 
     // Register textutils module
