@@ -37,5 +37,5 @@ def test_get_error_invalid_url():
 
 def test_get_error_404():
     """Test error handling for 404 response"""
-    with pytest.raises(ValueError, match="Request failed with status code: 404"):
+    with pytest.raises(ValueError, match="Status code: 404 Not Found"):
         fastpy_rs.http.get("https://httpbin.org/status/404")

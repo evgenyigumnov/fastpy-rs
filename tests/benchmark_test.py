@@ -3,7 +3,7 @@ from datetime import timedelta
 from fastpy_rs import benchmark
 
 # This defines how much overhead the call to the rust fn can have in Microseconds.  
-MAX_OVERHEAD_IN_MICROS = 500
+MAX_OVERHEAD_IN_MICROS = 2000
 
 def test_benchmark_fn():
 

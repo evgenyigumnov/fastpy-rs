@@ -228,7 +228,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### ⏱️ **Performance / Utils**
 
-37. [ ] `benchmark_fn(callable, *args, **kwargs) -> float`
+37. [x] `benchmark_fn(callable, *args, **kwargs) -> float`
 38. [ ] `parallel_map(func, list, threads=4) -> list`
 39. [ ] `fast_deduplication(list) -> list`
 40. [ ] `sort_large_list(list) -> list`
