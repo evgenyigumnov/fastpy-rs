@@ -1,12 +1,12 @@
-
 use pyo3::prelude::*;
 
 mod ai;
-mod datatools;
+mod benchmark;
 mod crypto;
-mod textutils;
-mod json;
+mod datatools;
 mod http;
+mod json;
+mod textutils;
 
 /// FastPy-RS: High-performance Python extensions written in Rust
 ///
@@ -53,9 +53,6 @@ mod http;
 /// # Output: JSON response from the server
 /// ```
 
-
-
-
 #[pymodule]
 fn fastpy_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     register_child_module(m)?;
@@ -63,10 +60,10 @@ fn fastpy_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
 }
 
 /// Registers all child modules with the parent Python module
-/// 
+///
 /// # Arguments
 /// * `parent_module` - The parent Python module to register child modules with
-/// 
+///
 /// # Returns
 /// * `PyResult<()>` - Ok(()) if all modules were registered successfully, or an error if any registration fails
 fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -74,7 +71,16 @@ fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let ai_module = PyModule::new(parent_module.py(), "ai")?;
     ai_module.add_function(wrap_pyfunction!(ai::token_frequency, &ai_module)?)?;
     parent_module.add_submodule(&ai_module)?;
-    
+
+    // Register Benchmarking module
+    let benchmark_module = PyModule::new(parent_module.py(), "benchmark")?;
+    benchmark_module.add_function(wrap_pyfunction!(
+        benchmark::benchmark_fn,
+        &benchmark_module
+    )?)?;
+
+    parent_module.add_submodule(&benchmark_module)?;
+
     // Register datatools module
     let datatools_module = PyModule::new(parent_module.py(), "datatools")?;
     datatools_module.add_function(wrap_pyfunction!(datatools::base64_encode, &datatools_module)?)?;
@@ -95,18 +101,21 @@ fn register_child_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     crypto_module.add_function(wrap_pyfunction!(crypto::is_valid_sha256, &crypto_module)?)?;
     crypto_module.add_function(wrap_pyfunction!(crypto::secure_compare, &crypto_module)?)?;
     parent_module.add_submodule(&crypto_module)?;
-    
+
     // Register textutils module
     let textutils_module = PyModule::new(parent_module.py(), "textutils")?;
-    textutils_module.add_function(wrap_pyfunction!(textutils::regex_search, &textutils_module)?)?;
+    textutils_module.add_function(wrap_pyfunction!(
+        textutils::regex_search,
+        &textutils_module
+    )?)?;
     parent_module.add_submodule(&textutils_module)?;
-    
+
     // Register json module
     let json_module = PyModule::new(parent_module.py(), "json")?;
     json_module.add_function(wrap_pyfunction!(json::parse_json, &json_module)?)?;
     json_module.add_function(wrap_pyfunction!(json::serialize_json, &json_module)?)?;
     parent_module.add_submodule(&json_module)?;
-    
+
     // Register http module
     let http_module = PyModule::new(parent_module.py(), "http")?;
     http_module.add_function(wrap_pyfunction!(http::get, &http_module)?)?;
